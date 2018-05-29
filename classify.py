@@ -136,3 +136,6 @@ def main():
     y_pred = predict(x_test, w, b)
     print("Train Accuracy: ", accuracy(y_train_original, y_train_pred))
     print("Test Accuracy: ", accuracy(y_test, y_pred))
+
+if __name__ == '__main__':
+	main()
