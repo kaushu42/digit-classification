@@ -17,8 +17,12 @@ def load_data():
     return X, Y
 
 # Use this if you want to scale the image
-def scale(x, y, factor = 255):
-    return x/factor, y/factor
+def scale(x, factor = 'auto'):
+    if factor == 'auto':
+        return x/x.max()
+    else:
+        return x/factor
+
 
 # Randomly shuffle the set and split it into test and train set
 def split(X, Y, ratio):
@@ -26,10 +30,9 @@ def split(X, Y, ratio):
     return train_test_split(x, y, test_size = ratio)
 
 # Visualize n images from the dataset
-def visualize(X, Y, n):
+def visualize(X, n = 1):
     for i in range(n):
         plt.imshow(X[i, :].reshape(8, 8))
-        print(Y[i])
         plt.show()
 
 # Perform one hot encoding on the labels
@@ -114,7 +117,7 @@ def accuracy(y, y_pred):
 # Main driver function to test the program
 def main():
     X, Y = load_data()
-
+    X = scale(X)
     x_train, x_test, y_train, y_test = split(X, Y, 0.2)
     y_train_original = y_train.copy()
 
@@ -123,7 +126,7 @@ def main():
 
     '''Uncomment these lines to train the model'''
     # y_train = encode(y_train)
-    # w, b, costs = train(x_train, y_train, learning_rate = 0.09, iterations = 2000, return_costs = True, verbose = True)
+    # w, b, costs = train(x_train, y_train, learning_rate = 20, iterations = 2000, return_costs = True, verbose = True)
     # plt.plot(costs)
     # plt.show()
 
