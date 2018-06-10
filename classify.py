@@ -46,8 +46,11 @@ def softmax(z):
     return exps/exps.sum(axis = 1, keepdims = True)
 
 # Calculate the cross-entropy loss
-def cost(y, a):
-    return -np.mean(y*np.log(a) + (1-y)*np.log(1-a))
+def cost(predictions, targets, epsilon=1e-12):
+    predictions = np.clip(predictions, epsilon, 1. - epsilon)
+    N = predictions.shape[0]
+    loss = -np.sum(np.sum(targets*np.log(predictions+1e-9)))/N
+    return loss
 
 # Randomly initialize the parameters
 def init_parameters(output_size, input_size):
@@ -125,10 +128,10 @@ def main():
     print('Test Set Size: ', y_test.shape[0])
 
     '''Uncomment these lines to train the model'''
-    # y_train = encode(y_train)
-    # w, b, costs = train(x_train, y_train, learning_rate = 20, iterations = 2000, return_costs = True, verbose = True)
-    # plt.plot(costs)
-    # plt.show()
+    y_train = encode(y_train)
+    w, b, costs = train(x_train, y_train, learning_rate = 20, iterations = 1000, return_costs = True, verbose = True)
+    plt.plot(costs)
+    plt.show()
 
     print("\nTraining is done!\n")
 
